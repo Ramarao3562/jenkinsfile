@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Clone the repository from GitHub
+                git url: 'https://github.com/your-username/your-react-repo.git', branch: 'main'
+            }
+        }
+        
+        stage('Install Dependencies') {
+            steps {
+                // Install npm dependencies for the React app
+                sh 'npm install'
+            }
+        }
+        
+        stage('Build React App') {
+            steps {
+                // Build the React application
+                sh 'npm run build'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Run tests (optional if you have tests configured)
+                sh 'npm test'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Deploy the app to a server, or move the build files to a directory
+                sh '''
+                mkdir -p /var/www/html/reactapp
+                cp -r build/* /var/www/html/reactapp/
+                '''
+            }
+        }
+    }
+    
+    post {
+        always {
+            // Clean up the workspace after job completion
+            cleanWs()
+        }
+        success {
+            echo 'Build and deployment succeeded!'
+        }
+        failure {
+            echo 'Build or deployment failed.'
+        }
+    }
+}
