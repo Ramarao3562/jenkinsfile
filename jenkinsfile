@@ -12,28 +12,28 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install npm dependencies for the React app
-                sh 'npm install'
+                bat 'npm install'
             }
         }
         
         stage('Build React App') {
             steps {
                 // Build the React application
-                sh 'npm run build'
+                bat 'npm run build'
             }
         }
         
         stage('Test') {
             steps {
                 // Run tests (optional if you have tests configured)
-                sh 'npm test'
+                bat 'npm test'
             }
         }
         
         stage('Deploy') {
             steps {
                 // Deploy the app to a server, or move the build files to a directory
-                sh '''
+                bat '''
                 mkdir -p /var/www/html/reactapp
                 cp -r build/* /var/www/html/reactapp/
                 '''
